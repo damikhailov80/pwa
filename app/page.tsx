@@ -11,22 +11,17 @@ interface JackpotData {
 async function getJackpot(): Promise<JackpotData> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/jackpot`, {
-      cache: 'no-store'
-    });
+    const res = await fetch(`${baseUrl}/api/jackpot`, { cache: 'no-store' });
     
-    if (!res.ok) {
-      throw new Error('Failed to fetch jackpot');
-    }
+    if (!res.ok) throw new Error('Failed to fetch');
     
     const data = await res.json();
-    
     return {
       jackpot: data.jackpot || 0,
       currency: data.currency || '€',
       fetchedAt: data.fetchedAt
     };
-  } catch (error) {
+  } catch {
     return {
       jackpot: 0,
       currency: '€',
