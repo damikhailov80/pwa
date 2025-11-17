@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   // Список разрешенных origins
   const allowedOrigins = [
     'http://127.0.0.1:8000',
-    'http://1ottoland.com:8000'
+    'https://1ottoland.com:8000'
   ];
 
   // Обработка preflight запросов
