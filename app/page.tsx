@@ -1,37 +1,53 @@
-import JackpotDisplay from './components/JackpotDisplay';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
-interface JackpotData {
-  jackpot: number;
-  currency: string;
-  fetchedAt: string;
-}
-
-async function getJackpot(): Promise<JackpotData> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/jackpot`, { cache: 'no-store' });
-    
-    if (!res.ok) throw new Error('Failed to fetch');
-    
-    const data = await res.json();
-    return {
-      jackpot: data.jackpot || 0,
-      currency: data.currency || '€',
-      fetchedAt: data.fetchedAt
-    };
-  } catch {
-    return {
-      jackpot: 0,
-      currency: '€',
-      fetchedAt: new Date().toISOString()
-    };
+const lotteries = [
+  {
+    name: 'EuroMillions',
+    path: '/euromillions',
+    logo: '/euromillions-logo.png',
+    description: 'European lottery with huge jackpots'
+  },
+  {
+    name: 'EuroJackpot',
+    path: '/eurojackpot',
+    logo: '/eurojackpot-logo.png',
+    description: 'Popular European lottery'
   }
-}
+];
 
-export default async function Home() {
-  const jackpotData = await getJackpot();
-  
-  return <JackpotDisplay initialData={jackpotData} />;
+export default function Home() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-blue-800">
+      <main className="flex flex-col items-center gap-8 p-8 max-w-4xl w-full">
+        <h1 className="text-white text-4xl font-bold text-center mb-4">
+          Lotteries
+        </h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          {lotteries.map((lottery) => (
+            <Link
+              key={lottery.path}
+              href={lottery.path}
+              className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all hover:scale-105"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <Image
+                  src={lottery.logo}
+                  alt={lottery.name}
+                  width={124}
+                  height={124}
+                  priority
+                />
+                <h2 className="text-white text-2xl font-bold">{lottery.name}</h2>
+                <p className="text-white/70 text-center text-sm">{lottery.description}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </main>
+    </div>
+  );
 }

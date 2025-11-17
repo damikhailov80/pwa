@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const baseJackpot = 123000000;
+  const baseJackpot = 50000000; // 50 млн
   const dailyIncrease = 86400;
   
   const now = new Date();
@@ -14,6 +14,7 @@ export async function GET() {
   const response = NextResponse.json({
     jackpot: currentJackpot,
     currency: '€',
+    lottery: 'EuroJackpot',
     fetchedAt: now.toISOString()
   });
 

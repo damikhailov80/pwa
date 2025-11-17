@@ -9,7 +9,14 @@ interface JackpotData {
   fetchedAt: string;
 }
 
-export default function JackpotDisplay({ initialData }: { initialData: JackpotData }) {
+interface JackpotDisplayProps {
+  initialData: JackpotData;
+  logoUrl: string;
+  logoAlt: string;
+  apiEndpoint: string;
+}
+
+export default function JackpotDisplay({ initialData, logoUrl, logoAlt, apiEndpoint }: JackpotDisplayProps) {
   const [jackpotData, setJackpotData] = useState<JackpotData>(initialData);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date(initialData.fetchedAt));
 
@@ -26,7 +33,7 @@ export default function JackpotDisplay({ initialData }: { initialData: JackpotDa
 
   const fetchJackpot = async () => {
     try {
-      const res = await fetch('/api/jackpot');
+      const res = await fetch(apiEndpoint);
       
       if (res.ok) {
         const data = await res.json();
@@ -46,10 +53,10 @@ export default function JackpotDisplay({ initialData }: { initialData: JackpotDa
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
       <main className="flex flex-col items-center gap-8 p-8">
         <Image
-          src="/euromillions-logo.png"
-          alt="EuroMillions logo"
-          width={96}
-          height={96}
+          src={logoUrl}
+          alt={logoAlt}
+          width={124}
+          height={124}
           priority
         />
         
