@@ -11,25 +11,10 @@ export async function GET() {
   const daysSinceReference = (now.getTime() - referenceDate.getTime()) / (1000 * 60 * 60 * 24);
   const currentJackpot = Math.floor(baseJackpot + (daysSinceReference * dailyIncrease));
   
-  const response = NextResponse.json({
+  return NextResponse.json({
     jackpot: currentJackpot,
     currency: '€',
     lottery: 'EuroJackpot',
     fetchedAt: now.toISOString()
   });
-
-  // CORS заголовки
-  response.headers.set('Access-Control-Allow-Origin', '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  
-  return response;
-}
-
-export async function OPTIONS() {
-  const response = new NextResponse(null, { status: 204 });
-  response.headers.set('Access-Control-Allow-Origin', '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  return response;
 }
